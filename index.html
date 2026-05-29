@@ -115,6 +115,25 @@
   .tile.done .check{display:flex;}
   .tile .check svg{width:11px;height:11px;}
 
+  /* ad missions — vertical offer list (B style) */
+  .adlist{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+  .offer{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;
+    padding:13px 14px;border:1px solid #F1F1F6;box-shadow:0 4px 14px rgba(30,30,60,.05);position:relative;}
+  .offer .ico{flex:0 0 auto;width:44px;height:44px;border-radius:13px;background:var(--teal-light);
+    display:flex;align-items:center;justify-content:center;font-size:22px;}
+  .offer .body{flex:1 1 auto;min-width:0;}
+  .offer .ot{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;letter-spacing:-.02em;}
+  .offer .adtag{font-size:9px;font-weight:800;color:var(--teal);border:1px solid var(--teal);
+    border-radius:4px;padding:1px 4px;letter-spacing:.04em;}
+  .offer .os{font-size:12px;color:var(--text03);margin-top:3px;line-height:1.35;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .offer .or{flex:0 0 auto;font-size:12px;font-weight:800;color:var(--teal);
+    background:var(--teal-light);border-radius:var(--radius-pill);padding:5px 11px;}
+  .offer.done{background:#FAFAFC;}
+  .offer.done .ico{opacity:.5;}
+  .offer.done .ot{color:var(--text03);}
+  .offer.done .or{color:var(--gray040);background:var(--gray010);}
+
   /* bonus row */
   .bonus{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--purple-light);
     border-radius:16px;}
@@ -170,10 +189,10 @@
     {ic:'🎁', bg:'#FFE3EC', tt:'가정의달 참여', rw:'최대 5만P'},
     {ic:'🌷', bg:'#FCE4F3', tt:'점수 올려 꽃 피우기', rw:'+100P', bar:57, flower:true}
   ];
-  const adTiles = [
-    {ic:'🚗', tt:'현대캐피탈', rw:'+5P', done:true},
-    {ic:'💳', tt:'카드비교', rw:'+5P'},
-    {ic:'2️⃣', tt:'SBI 한도조회', rw:'+5P'}
+  const adOffers = [
+    {ic:'🚗', tt:'현대캐피탈', sub:'자동차담보대출 한도조회', rw:'+5P', done:true},
+    {ic:'💳', tt:'카드비교', sub:'최대 19만원 캐시백 받기', rw:'+5P'},
+    {ic:'2️⃣', tt:'SBI저축은행', sub:'최대 2% 금리할인 한도조회', rw:'+5P'}
   ];
 
   function tile(m, ad){
@@ -187,6 +206,18 @@
         <div class="tt">${m.tt}</div>
         <div class="rw">${m.rw}</div>
         ${bar}
+      </div>`;
+  }
+
+  function offer(m){
+    return `
+      <div class="offer${m.done?' done':''}">
+        <div class="ico">${m.ic}</div>
+        <div class="body">
+          <div class="ot">${m.tt}<span class="adtag">AD</span></div>
+          <div class="os">${m.sub}</div>
+        </div>
+        <span class="or">${m.rw}</span>
       </div>`;
   }
 
@@ -215,7 +246,7 @@
         <span class="gchip t">📺 광고 ${c.name}</span>
         <span class="gcount">1 / 3</span>
       </div>
-      <div class="mgrid">${adTiles.map(m=>tile(m,true)).join('')}</div>
+      <div class="adlist">${adOffers.map(offer).join('')}</div>
 
       <div class="bonus">
         <span class="bi">🏆</span>
