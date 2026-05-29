@@ -43,6 +43,19 @@
   .sw.p{background:var(--purple060);}
   .sw.t{background:var(--teal);}
 
+  /* naming rationale */
+  .namebox{max-width:560px;width:100%;background:var(--white);border-radius:18px;
+    padding:18px 20px;margin-bottom:30px;box-shadow:0 4px 14px rgba(30,30,60,.05);text-align:left;}
+  .namebox .nbtop{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .namebox .nbtag{font-size:11px;font-weight:700;color:#fff;background:var(--purple060);padding:4px 11px;border-radius:var(--radius-pill);}
+  .namebox .nbname{font-size:20px;font-weight:800;letter-spacing:-.02em;}
+  .namebox .nbroman{font-size:12px;color:var(--text03);font-weight:600;margin-bottom:12px;}
+  .namebox ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .namebox li{font-size:12.5px;color:var(--text02);line-height:1.55;padding-left:18px;position:relative;}
+  .namebox li::before{content:'';position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--purple060);}
+  .namebox li.lim::before{background:var(--gray040);}
+  .namebox li b{color:var(--text01);}
+
   .phone{width:390px;height:860px;background:var(--bg);border-radius:36px;
     border:1px solid var(--gray020);box-shadow:0 24px 60px rgba(20,22,40,.16);
     overflow:hidden;position:relative;display:flex;flex-direction:column;}
@@ -148,6 +161,20 @@
       <span class="lg"><span class="sw p"></span>핀다 미션 · 자체 참여 활동</span>
       <span class="lg"><span class="sw t"></span>광고 미션 · 광고 보고 포인트</span>
     </div>
+  </div>
+
+  <div class="namebox">
+    <div class="nbtop">
+      <span class="nbtag">탭 네이밍</span>
+      <span class="nbname">미션</span>
+    </div>
+    <div class="nbroman">mission · 라틴어 missio = "보내다" → 누군가에게 부여된 과업·사명</div>
+    <ul>
+      <li><b>행동 유도를 명시</b> — '포인트·혜택'은 결과·대상을 가리키는 명사지만, '미션'은 단어 자체가 "해야 할 일"을 내포. 탭명만 봐도 "들어가면 할 게 있다"는 행동 기대를 형성해 <b>클릭 → 완료</b> 루프를 자연스럽게 유도.</li>
+      <li><b>알림함 미션 알림 부활·디벨롭</b> — "오늘의 미션 2개 남았어요" 같은 리마인드 카피가 가장 자연스러운 단어. 마감·완료와 궁합이 좋아, 과거 미션 알림 자산을 <b>데일리 리텐션 훅</b>으로 재활용 가능. (포인트/혜택은 푸시 카피가 어색)</li>
+      <li><b>게이미피케이션 표준</b> — '미션 = 달성·보상 루프(출석·퀘스트)'라는 학습된 멘탈모델. 진행률 게이지·완주 보너스와 단어 의미가 일치해 동기 부여 장치를 자연스럽게 얹을 수 있음.</li>
+      <li class="lim"><b>한계</b> — 행동형 지면에 특화 → 핀다포스트(콘텐츠)·상시 BD 혜택까지 한 단어로 포괄하기엔 좁음. 콘텐츠 확장 시 부정합 가능.</li>
+    </ul>
   </div>
 
   <div class="phone">
