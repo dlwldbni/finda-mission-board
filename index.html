@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>시나리오 C · 미션 보드 (핀다 미션 / 광고 미션)</title>
+<title>시나리오 C · 게이미피케이션 (도전 / 미션)</title>
 <style>
   :root{
     --purple060:#5D4CF2;
@@ -31,7 +31,7 @@
     min-height:100vh;color:var(--text01);
     padding:40px 20px 80px;display:flex;flex-direction:column;align-items:center;}
 
-  .head{max-width:560px;width:100%;margin-bottom:30px;text-align:center;}
+  .head{max-width:760px;width:100%;margin-bottom:30px;text-align:center;}
   .head .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;
     color:var(--purple060);background:var(--purple-light);padding:6px 14px;border-radius:var(--radius-pill);margin-bottom:14px;}
   .head h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px;}
@@ -43,18 +43,22 @@
   .sw.p{background:var(--purple060);}
   .sw.t{background:var(--teal);}
 
-  /* naming rationale */
-  .namebox{max-width:560px;width:100%;background:var(--white);border-radius:18px;
-    padding:18px 20px;margin-bottom:30px;box-shadow:0 4px 14px rgba(30,30,60,.05);text-align:left;}
-  .namebox .nbtop{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
-  .namebox .nbtag{font-size:11px;font-weight:700;color:#fff;background:var(--purple060);padding:4px 11px;border-radius:var(--radius-pill);}
-  .namebox .nbname{font-size:20px;font-weight:800;letter-spacing:-.02em;}
-  .namebox .nbroman{font-size:12px;color:var(--text03);font-weight:600;margin-bottom:12px;}
-  .namebox ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
-  .namebox li{font-size:12.5px;color:var(--text02);line-height:1.55;padding-left:18px;position:relative;}
-  .namebox li::before{content:'';position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--purple060);}
-  .namebox li.lim::before{background:var(--gray040);}
-  .namebox li b{color:var(--text01);}
+  /* row of candidate columns */
+  .row{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
+  .col{display:flex;flex-direction:column;align-items:center;width:390px;}
+
+  /* per-candidate naming rationale */
+  .cap{width:100%;background:var(--white);border-radius:18px;padding:18px 20px;margin-bottom:20px;
+    box-shadow:0 4px 14px rgba(30,30,60,.05);text-align:left;}
+  .cap .nbtop{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .cap .nbtag{font-size:11px;font-weight:700;color:#fff;background:var(--purple060);padding:4px 11px;border-radius:var(--radius-pill);}
+  .cap .nbname{font-size:20px;font-weight:800;letter-spacing:-.02em;}
+  .cap .nbroman{font-size:12px;color:var(--text03);font-weight:600;margin-bottom:12px;}
+  .cap ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .cap li{font-size:12.5px;color:var(--text02);line-height:1.55;padding-left:18px;position:relative;}
+  .cap li::before{content:'';position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--purple060);}
+  .cap li.lim::before{background:var(--gray040);}
+  .cap li b{color:var(--text01);}
 
   .phone{width:390px;height:860px;background:var(--bg);border-radius:36px;
     border:1px solid var(--gray020);box-shadow:0 24px 60px rgba(20,22,40,.16);
@@ -79,18 +83,22 @@
   .meritz .legal{font-size:8px;color:var(--gray050);margin-top:4px;}
   .meritz .env{font-size:24px;flex:0 0 auto;}
 
-  /* mission hero */
+  /* mission hero with running character */
   .hero{background:linear-gradient(120deg,#6A4BF0,#8A5BF7);border-radius:20px;padding:18px;color:#fff;margin-bottom:16px;
     box-shadow:0 10px 26px rgba(93,76,242,.28);}
-  .hero .htop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .hero .htop{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
   .hero .htop .title{font-size:17px;font-weight:800;display:flex;align-items:center;gap:7px;}
   .hero .htop .bal{background:rgba(255,255,255,.18);border-radius:var(--radius-pill);
     padding:6px 12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px;}
   .hero .htop .bal .c{width:16px;height:16px;border-radius:50%;
     background:radial-gradient(circle at 35% 30%,#FFD66B,#F5A623);display:inline-block;}
-  .hero .pbar{height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-bottom:8px;}
-  .hero .pbar > i{display:block;height:100%;width:33%;border-radius:99px;
+  .hero .track{position:relative;margin-bottom:10px;}
+  .hero .pbar{height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;}
+  .hero .pbar > i{display:block;height:100%;width:29%;border-radius:99px;
     background:linear-gradient(90deg,#FFE36E,#FFC93C);}
+  .hero .runner{position:absolute;top:-13px;left:29%;transform:translateX(-50%);font-size:21px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}
+  .hero .flag{position:absolute;top:-9px;right:-2px;font-size:16px;}
   .hero .pmeta{display:flex;justify-content:space-between;font-size:12px;font-weight:600;opacity:.95;}
 
   /* group */
@@ -111,7 +119,7 @@
   .mitem.done.ad .chk{background:var(--teal);border-color:var(--teal);}
   .mitem .chk svg{width:13px;height:13px;display:none;}
   .mitem.done .chk svg{display:block;}
-  .mitem .mbody{flex:1;}
+  .mitem .mbody{flex:1;min-width:0;}
   .mitem .mttl{font-size:14px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:6px;}
   .mitem.done .mttl{color:var(--text03);text-decoration:line-through;}
   .mitem .micon{font-size:15px;}
@@ -121,6 +129,10 @@
   .mitem .rwd{flex:0 0 auto;font-size:13px;font-weight:800;color:var(--purple060);}
   .mitem.ad .rwd{color:var(--teal);}
   .mitem.done .rwd{color:var(--gray040);}
+  /* mini progress inside a mission */
+  .mprog{height:5px;background:var(--gray020);border-radius:99px;overflow:hidden;margin-top:7px;}
+  .mprog > i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C68F5,#5D4CF2);}
+  .mprog.flower > i{background:linear-gradient(90deg,#FF9ECF,#F45EAE);}
 
   /* bonus row */
   .bonus{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--purple-light);
@@ -128,15 +140,6 @@
   .bonus .bi{font-size:18px;}
   .bonus .bt{font-size:13px;font-weight:800;color:var(--purple070);}
   .bonus .br{margin-left:auto;font-size:14px;font-weight:800;color:var(--purple060);}
-
-  /* offer (남은 BD) */
-  .offer{display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border-radius:18px;
-    box-shadow:0 4px 14px rgba(30,30,60,.05);margin-top:14px;}
-  .offer .ico{width:46px;height:46px;border-radius:12px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:22px;background:#E8EEFF;}
-  .offer .obody{flex:1;}
-  .offer .obody .ttl{font-size:14px;font-weight:700;line-height:1.3;}
-  .offer .obody .osub{font-size:11px;color:var(--text03);margin-top:3px;}
-  .offer .pt{flex:0 0 auto;border:1px solid var(--purple060);color:var(--purple060);font-size:12px;font-weight:700;padding:7px 12px;border-radius:var(--radius-pill);}
 
   /* bottom nav */
   .tabbar{flex:0 0 auto;display:flex;justify-content:space-around;align-items:center;
@@ -154,34 +157,56 @@
 <body>
 
   <div class="head">
-    <span class="eyebrow">시나리오 C · 게이미피케이션 미션</span>
-    <h1>미션 보드 · 핀다 미션 / 광고 미션</h1>
-    <p>포인트 적립 행동을 <b>데일리 미션 체크리스트</b>로 묶고, 성격에 따라 두 그룹으로 구분합니다.<br/>완주 보너스·진행률 게이지로 "오늘 다 모으기" 동기를 강화합니다.</p>
+    <span class="eyebrow">시나리오 C · 게이미피케이션</span>
+    <h1>미션 보드 · 네이밍 2안 (도전 / 미션)</h1>
+    <p>포인트 적립 행동을 <b>데일리 미션·퀘스트</b>로 묶고 게임성을 강화했습니다.<br/><b>만보기·신용점수 꽃 피우기</b> 등 목표 달성형 미션을 추가하고, 진행률에는 <b>달리는 캐릭터🏃</b>를 얹어 "완주" 동기를 자극합니다.</p>
     <div class="legend">
       <span class="lg"><span class="sw p"></span>핀다 미션 · 자체 참여 활동</span>
       <span class="lg"><span class="sw t"></span>광고 미션 · 광고 보고 포인트</span>
     </div>
   </div>
 
-  <div class="namebox">
-    <div class="nbtop">
-      <span class="nbtag">탭 네이밍</span>
-      <span class="nbname">미션</span>
-    </div>
-    <div class="nbroman">mission · 라틴어 missio = "보내다" → 누군가에게 부여된 과업·사명</div>
-    <ul>
-      <li><b>행동 유도를 명시</b> — '포인트·혜택'은 결과·대상을 가리키는 명사지만, '미션'은 단어 자체가 "해야 할 일"을 내포. 탭명만 봐도 "들어가면 할 게 있다"는 행동 기대를 형성해 <b>클릭 → 완료</b> 루프를 자연스럽게 유도.</li>
-      <li><b>알림함 미션 알림 부활·디벨롭</b> — "오늘의 미션 2개 남았어요" 같은 리마인드 카피가 가장 자연스러운 단어. 마감·완료와 궁합이 좋아, 과거 미션 알림 자산을 <b>데일리 리텐션 훅</b>으로 재활용 가능. (포인트/혜택은 푸시 카피가 어색)</li>
-      <li><b>게이미피케이션 표준</b> — '미션 = 달성·보상 루프(출석·퀘스트)'라는 학습된 멘탈모델. 진행률 게이지·완주 보너스와 단어 의미가 일치해 동기 부여 장치를 자연스럽게 얹을 수 있음.</li>
-      <li class="lim"><b>한계</b> — 행동형 지면에 특화 → 핀다포스트(콘텐츠)·상시 BD 혜택까지 한 단어로 포괄하기엔 좁음. 콘텐츠 확장 시 부정합 가능.</li>
-    </ul>
-  </div>
+  <div class="row" id="row"></div>
 
-  <div class="phone">
-    <div class="statusbar"><span>12:04</span><span class="right">📶 5G <span class="battery">100</span></span></div>
-    <div class="pageheader"><h2>미션</h2></div>
-    <div class="screen">
+<script>
+  const ICONS = {
+    mission: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="#fff" stroke="none"/></svg>',
+    challenge: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 4h11l-2 4 2 4H6"/></svg>'
+  };
+  const homeSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 5l8 6.5"/><path d="M6 10.5V19h12v-8.5"/></svg>';
+  const allSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+  const checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
 
+  const CANDS = [
+    {tag:'C-1', name:'도전', icon:'challenge', heroEmoji:'🔥',
+      roman:'挑戰 · 돋울 挑 + 싸울 戰 → 어려운 과제·기록에 능동적으로 맞섬',
+      bullets:[
+        {t:'<b>능동적 성취 프레임</b> — \'도전\'은 유저가 스스로 목표에 부딪히는 능동 동사. 만보기·신용점수 올리기처럼 \'해내는\' 미션과 궁합이 좋아 <b>게임성을 극대화</b>.'},
+        {t:'<b>승부욕·완주 동기</b> — "오늘의 도전"처럼 매일 새 과제를 던지는 톤. 진행률 게이지·완주 보너스와 만나 "끝까지 깨고 싶은" 동기를 자극.'},
+        {t:'<b>친근한 한국어</b> — 토스 챌린지·뱅크샐러드 등 학습된 \'챌린지\' 멘탈모델을 우리말로. 거리감이 낮고 캠페인 카피 확장이 쉬움.'},
+        {t:'<b>한계</b> — \'도전\'은 난이도·노력을 전제 → 가벼운 출석·광고 보기엔 다소 거창하게 느껴질 수 있음.', lim:true}
+      ]},
+    {tag:'C-2', name:'미션', icon:'mission', heroEmoji:'🎯',
+      roman:'mission · 라틴어 missio = "보내다" → 누군가에게 부여된 과업·사명',
+      bullets:[
+        {t:'<b>행동 유도를 명시</b> — \'포인트·혜택\'은 결과·대상을 가리키는 명사지만, \'미션\'은 단어 자체가 "해야 할 일"을 내포. 탭명만 봐도 <b>클릭 → 완료</b> 루프를 유도.'},
+        {t:'<b>알림함 미션 알림 부활·디벨롭</b> — "오늘의 미션 2개 남았어요" 같은 리마인드 카피가 가장 자연스러운 단어. 과거 미션 알림 자산을 <b>데일리 리텐션 훅</b>으로 재활용.'},
+        {t:'<b>게이미피케이션 표준</b> — \'미션 = 달성·보상 루프\'라는 학습된 멘탈모델. 진행률 게이지·완주 보너스와 의미가 일치.'},
+        {t:'<b>한계</b> — 행동형 지면에 특화 → 핀다포스트(콘텐츠)·상시 BD 혜택까지 한 단어로 포괄하기엔 좁음.', lim:true}
+      ]}
+  ];
+
+  function cap(c){
+    return `
+      <div class="cap">
+        <div class="nbtop"><span class="nbtag">${c.tag} 탭 네이밍</span><span class="nbname">${c.name}</span></div>
+        <div class="nbroman">${c.roman}</div>
+        <ul>${c.bullets.map(b=>`<li class="${b.lim?'lim':''}">${b.t}</li>`).join('')}</ul>
+      </div>`;
+  }
+
+  function screen(c){
+    return `
       <div class="meritz">
         <div class="mtxt">
           <div class="brand"><b>meritz</b> 메리츠화재 | 보장분석</div>
@@ -191,52 +216,66 @@
         <div class="env">✉️</div>
       </div>
 
-      <!-- mission hero -->
       <div class="hero">
         <div class="htop">
-          <div class="title">🎯 오늘의 미션</div>
+          <div class="title">${c.heroEmoji} 오늘의 ${c.name}</div>
           <div class="bal"><span class="c"></span>3,644 P</div>
         </div>
-        <div class="pbar"><i></i></div>
-        <div class="pmeta"><span>2 / 6 완료</span><span>모두 완료시 +500P 보너스 🎁</span></div>
+        <div class="track">
+          <div class="pbar"><i></i></div>
+          <span class="runner">🏃</span>
+          <span class="flag">🏁</span>
+        </div>
+        <div class="pmeta"><span>2 / 7 완료</span><span>모두 완주시 +500P 🎁</span></div>
       </div>
 
-      <!-- group 1: 핀다 미션 -->
       <div class="group">
         <div class="ghead">
-          <span class="gchip p">⭐ 핀다 미션</span>
+          <span class="gchip p">⭐ 핀다 ${c.name}</span>
           <span class="gsub">핀다와 함께하는 활동</span>
-          <span class="gcount">1 / 3</span>
+          <span class="gcount">1 / 4</span>
         </div>
         <div class="mcard">
           <div class="mitem done">
-            <div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="chk">${checkSvg}</div>
             <div class="mbody"><div class="mttl"><span class="micon">📅</span> 출석체크 완료</div><div class="msub">매일 자정 초기화</div></div>
             <div class="rwd">+30P</div>
           </div>
           <div class="mitem">
             <div class="chk"></div>
-            <div class="mbody"><div class="mttl"><span class="micon">🎁</span> 가정의달 응모하기</div><div class="msub">D-10 · 5월 29일까지</div></div>
+            <div class="mbody">
+              <div class="mttl"><span class="micon">🚶</span> 만보기 · 오늘 10,000보 걷기</div>
+              <div class="msub">6,200 / 10,000보</div>
+              <div class="mprog"><i style="width:62%"></i></div>
+            </div>
+            <div class="rwd">+50P</div>
+          </div>
+          <div class="mitem">
+            <div class="chk"></div>
+            <div class="mbody"><div class="mttl"><span class="micon">🎁</span> 가정의달 참여하기</div><div class="msub">D-10 · 5월 29일까지</div></div>
             <div class="rwd">최대 5만P</div>
           </div>
           <div class="mitem">
             <div class="chk"></div>
-            <div class="mbody"><div class="mttl"><span class="micon">🎰</span> 랜덤포인트 돌리기</div><div class="msub">하루 1회</div></div>
-            <div class="rwd">최대 1만P</div>
+            <div class="mbody">
+              <div class="mttl"><span class="micon">🌷</span> 신용점수 올리고 꽃 피우기</div>
+              <div class="msub">물 주기 4 / 7단계 · 만개까지 3일</div>
+              <div class="mprog flower"><i style="width:57%"></i></div>
+            </div>
+            <div class="rwd">+100P</div>
           </div>
         </div>
       </div>
 
-      <!-- group 2: 광고 미션 -->
       <div class="group">
         <div class="ghead">
-          <span class="gchip t">📺 광고 미션</span>
+          <span class="gchip t">📺 광고 ${c.name}</span>
           <span class="gsub">광고 보고 포인트 받기</span>
           <span class="gcount">1 / 3</span>
         </div>
         <div class="mcard">
           <div class="mitem ad done">
-            <div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="chk">${checkSvg}</div>
             <div class="mbody"><div class="mttl"><span class="micon">🚗</span> 현대캐피탈 광고 보기 <span class="adtag">AD</span></div><div class="msub">자동차담보대출</div></div>
             <div class="rwd">+5P</div>
           </div>
@@ -253,21 +292,31 @@
         </div>
       </div>
 
-      <!-- 완주 보너스 -->
       <div class="bonus">
         <span class="bi">🏆</span>
-        <span class="bt">미션 6개 모두 완주 보너스</span>
+        <span class="bt">${c.name} 7개 모두 완주 보너스</span>
         <span class="br">+500P</span>
+      </div>`;
+  }
+
+  function phone(c){
+    return `
+    <div class="col">
+      ${cap(c)}
+      <div class="phone">
+        <div class="statusbar"><span>12:04</span><span class="right">📶 5G <span class="battery">100</span></span></div>
+        <div class="pageheader"><h2>${c.name}</h2></div>
+        <div class="screen">${screen(c)}</div>
+        <div class="tabbar">
+          <div class="tab"><div class="ti">${homeSvg}</div><div class="tl">홈</div></div>
+          <div class="tab active"><div class="ti"><span class="pcircle">${ICONS[c.icon]}</span></div><div class="tl">${c.name}</div></div>
+          <div class="tab"><div class="ti">${allSvg}</div><div class="tl">전체</div></div>
+        </div>
       </div>
+    </div>`;
+  }
 
-    </div>
-
-    <div class="tabbar">
-      <div class="tab"><div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 5l8 6.5"/><path d="M6 10.5V19h12v-8.5"/></svg></div><div class="tl">홈</div></div>
-      <div class="tab active"><div class="ti"><span class="pcircle"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="#fff" stroke="none"/></svg></span></div><div class="tl">미션</div></div>
-      <div class="tab"><div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div><div class="tl">전체</div></div>
-    </div>
-  </div>
-
+  document.getElementById('row').innerHTML = CANDS.map(phone).join('');
+</script>
 </body>
 </html>
