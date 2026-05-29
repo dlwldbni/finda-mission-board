@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>시나리오 C · 미션 보드 (핀다 미션 / 광고 미션)</title>
+<style>
+  :root{
+    --purple060:#5D4CF2;
+    --purple070:#4B3BD6;
+    --purple-light:#EEEBFF;
+    --gray010:#F6F6F9;
+    --gray020:#EDEEF2;
+    --gray030:#E1E3EA;
+    --gray040:#C8CBD4;
+    --gray050:#AEB2BE;
+    --text01:#15161B;
+    --text02:#4A4D57;
+    --text03:#9498A4;
+    --teal:#1BB6A6;
+    --teal-light:#E2F7F4;
+    --white:#FFFFFF;
+    --bg:#F2F3F6;
+    --radius-card:20px;
+    --radius-pill:999px;
+    --font:'PretendardFin','Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{font-family:var(--font);
+    background:linear-gradient(160deg,#ECEAFE 0%,#F4F5F8 45%,#EAF0FB 100%);
+    min-height:100vh;color:var(--text01);
+    padding:40px 20px 80px;display:flex;flex-direction:column;align-items:center;}
+
+  .head{max-width:560px;width:100%;margin-bottom:30px;text-align:center;}
+  .head .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;
+    color:var(--purple060);background:var(--purple-light);padding:6px 14px;border-radius:var(--radius-pill);margin-bottom:14px;}
+  .head h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px;}
+  .head p{font-size:14px;color:var(--text02);line-height:1.6;}
+  .head .legend{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+  .head .lg{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--text02);
+    background:var(--white);padding:8px 14px;border-radius:var(--radius-pill);box-shadow:0 2px 8px rgba(30,30,60,.05);}
+  .head .lg .sw{width:12px;height:12px;border-radius:4px;}
+  .sw.p{background:var(--purple060);}
+  .sw.t{background:var(--teal);}
+
+  .phone{width:390px;height:860px;background:var(--bg);border-radius:36px;
+    border:1px solid var(--gray020);box-shadow:0 24px 60px rgba(20,22,40,.16);
+    overflow:hidden;position:relative;display:flex;flex-direction:column;}
+  .statusbar{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
+    padding:16px 28px 6px;font-size:15px;font-weight:600;background:var(--bg);z-index:20;}
+  .statusbar .right{display:flex;align-items:center;gap:6px;font-size:13px;}
+  .battery{background:#1c1d22;color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;}
+  .pageheader{flex:0 0 auto;padding:10px 22px 12px;background:var(--bg);z-index:15;}
+  .pageheader h2{font-size:26px;font-weight:800;letter-spacing:-.03em;}
+  .screen{flex:1;overflow-y:auto;padding:4px 16px 16px;}
+  .screen::-webkit-scrollbar{width:0;}
+
+  /* meritz banner */
+  .meritz{background:#FDEEF1;border-radius:14px;padding:11px 14px;position:relative;overflow:hidden;margin-bottom:12px;
+    display:flex;align-items:center;gap:10px;}
+  .meritz .mtxt{flex:1;}
+  .meritz .brand{font-size:10px;color:var(--text03);font-weight:600;margin-bottom:2px;}
+  .meritz .brand b{color:#E8344E;font-weight:800;}
+  .meritz h3{font-size:13px;font-weight:800;line-height:1.28;}
+  .meritz h3 em{color:#E8344E;font-style:normal;}
+  .meritz .legal{font-size:8px;color:var(--gray050);margin-top:4px;}
+  .meritz .env{font-size:24px;flex:0 0 auto;}
+
+  /* mission hero */
+  .hero{background:linear-gradient(120deg,#6A4BF0,#8A5BF7);border-radius:20px;padding:18px;color:#fff;margin-bottom:16px;
+    box-shadow:0 10px 26px rgba(93,76,242,.28);}
+  .hero .htop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .hero .htop .title{font-size:17px;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .hero .htop .bal{background:rgba(255,255,255,.18);border-radius:var(--radius-pill);
+    padding:6px 12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px;}
+  .hero .htop .bal .c{width:16px;height:16px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#FFD66B,#F5A623);display:inline-block;}
+  .hero .pbar{height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-bottom:8px;}
+  .hero .pbar > i{display:block;height:100%;width:33%;border-radius:99px;
+    background:linear-gradient(90deg,#FFE36E,#FFC93C);}
+  .hero .pmeta{display:flex;justify-content:space-between;font-size:12px;font-weight:600;opacity:.95;}
+
+  /* group */
+  .group{margin-bottom:18px;}
+  .ghead{display:flex;align-items:center;gap:8px;margin:0 2px 10px;}
+  .ghead .gchip{font-size:13px;font-weight:800;color:#fff;padding:5px 12px;border-radius:var(--radius-pill);display:flex;align-items:center;gap:5px;}
+  .ghead .gchip.p{background:var(--purple060);}
+  .ghead .gchip.t{background:var(--teal);}
+  .ghead .gsub{font-size:12px;color:var(--text03);font-weight:600;}
+  .ghead .gcount{margin-left:auto;font-size:12px;font-weight:700;color:var(--text03);}
+
+  .mcard{background:var(--white);border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(30,30,60,.05);}
+  .mitem{display:flex;align-items:center;gap:12px;padding:15px 16px;border-bottom:1px solid var(--gray020);}
+  .mitem:last-child{border-bottom:none;}
+  .mitem .chk{width:24px;height:24px;border-radius:50%;flex:0 0 auto;border:2px solid var(--gray030);
+    display:flex;align-items:center;justify-content:center;}
+  .mitem.done .chk{background:var(--purple060);border-color:var(--purple060);}
+  .mitem.done.ad .chk{background:var(--teal);border-color:var(--teal);}
+  .mitem .chk svg{width:13px;height:13px;display:none;}
+  .mitem.done .chk svg{display:block;}
+  .mitem .mbody{flex:1;}
+  .mitem .mttl{font-size:14px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:6px;}
+  .mitem.done .mttl{color:var(--text03);text-decoration:line-through;}
+  .mitem .micon{font-size:15px;}
+  .mitem .msub{font-size:11px;color:var(--text03);margin-top:3px;}
+  .mitem .adtag{font-size:9px;font-weight:800;color:var(--teal);border:1px solid var(--teal);
+    border-radius:4px;padding:1px 4px;letter-spacing:.04em;}
+  .mitem .rwd{flex:0 0 auto;font-size:13px;font-weight:800;color:var(--purple060);}
+  .mitem.ad .rwd{color:var(--teal);}
+  .mitem.done .rwd{color:var(--gray040);}
+
+  /* bonus row */
+  .bonus{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--purple-light);
+    border-radius:16px;margin-top:10px;}
+  .bonus .bi{font-size:18px;}
+  .bonus .bt{font-size:13px;font-weight:800;color:var(--purple070);}
+  .bonus .br{margin-left:auto;font-size:14px;font-weight:800;color:var(--purple060);}
+
+  /* offer (남은 BD) */
+  .offer{display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border-radius:18px;
+    box-shadow:0 4px 14px rgba(30,30,60,.05);margin-top:14px;}
+  .offer .ico{width:46px;height:46px;border-radius:12px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:22px;background:#E8EEFF;}
+  .offer .obody{flex:1;}
+  .offer .obody .ttl{font-size:14px;font-weight:700;line-height:1.3;}
+  .offer .obody .osub{font-size:11px;color:var(--text03);margin-top:3px;}
+  .offer .pt{flex:0 0 auto;border:1px solid var(--purple060);color:var(--purple060);font-size:12px;font-weight:700;padding:7px 12px;border-radius:var(--radius-pill);}
+
+  /* bottom nav */
+  .tabbar{flex:0 0 auto;display:flex;justify-content:space-around;align-items:center;
+    padding:10px 0 22px;background:var(--white);border-top:1px solid var(--gray020);z-index:20;}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--gray050);}
+  .tab .ti{width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+  .tab .ti > svg{width:22px;height:22px;display:block;}
+  .tab .tl{font-size:11px;font-weight:600;}
+  .tab.active{color:var(--text01);}
+  .tab.active .pcircle{width:24px;height:24px;border-radius:50%;background:var(--purple060);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+  .tab.active .pcircle svg{width:15px;height:15px;display:block;}
+</style>
+</head>
+<body>
+
+  <div class="head">
+    <span class="eyebrow">시나리오 C · 게이미피케이션 미션</span>
+    <h1>미션 보드 · 핀다 미션 / 광고 미션</h1>
+    <p>포인트 적립 행동을 <b>데일리 미션 체크리스트</b>로 묶고, 성격에 따라 두 그룹으로 구분합니다.<br/>완주 보너스·진행률 게이지로 "오늘 다 모으기" 동기를 강화합니다.</p>
+    <div class="legend">
+      <span class="lg"><span class="sw p"></span>핀다 미션 · 자체 참여 활동</span>
+      <span class="lg"><span class="sw t"></span>광고 미션 · 광고 보고 포인트</span>
+    </div>
+  </div>
+
+  <div class="phone">
+    <div class="statusbar"><span>12:04</span><span class="right">📶 5G <span class="battery">100</span></span></div>
+    <div class="pageheader"><h2>미션</h2></div>
+    <div class="screen">
+
+      <div class="meritz">
+        <div class="mtxt">
+          <div class="brand"><b>meritz</b> 메리츠화재 | 보장분석</div>
+          <h3><em>누적된 보험 내역 확인,</em> 1분만에 점검하세요!</h3>
+          <div class="legal">준법감시인 심의필 제2026-광고-1028호(2026.04.28~2027.04.27)</div>
+        </div>
+        <div class="env">✉️</div>
+      </div>
+
+      <!-- mission hero -->
+      <div class="hero">
+        <div class="htop">
+          <div class="title">🎯 오늘의 미션</div>
+          <div class="bal"><span class="c"></span>3,644 P</div>
+        </div>
+        <div class="pbar"><i></i></div>
+        <div class="pmeta"><span>2 / 6 완료</span><span>모두 완료시 +500P 보너스 🎁</span></div>
+      </div>
+
+      <!-- group 1: 핀다 미션 -->
+      <div class="group">
+        <div class="ghead">
+          <span class="gchip p">⭐ 핀다 미션</span>
+          <span class="gsub">핀다와 함께하는 활동</span>
+          <span class="gcount">1 / 3</span>
+        </div>
+        <div class="mcard">
+          <div class="mitem done">
+            <div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="mbody"><div class="mttl"><span class="micon">📅</span> 출석체크 완료</div><div class="msub">매일 자정 초기화</div></div>
+            <div class="rwd">+30P</div>
+          </div>
+          <div class="mitem">
+            <div class="chk"></div>
+            <div class="mbody"><div class="mttl"><span class="micon">🎁</span> 가정의달 응모하기</div><div class="msub">D-10 · 5월 29일까지</div></div>
+            <div class="rwd">최대 5만P</div>
+          </div>
+          <div class="mitem">
+            <div class="chk"></div>
+            <div class="mbody"><div class="mttl"><span class="micon">🎰</span> 랜덤포인트 돌리기</div><div class="msub">하루 1회</div></div>
+            <div class="rwd">최대 1만P</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- group 2: 광고 미션 -->
+      <div class="group">
+        <div class="ghead">
+          <span class="gchip t">📺 광고 미션</span>
+          <span class="gsub">광고 보고 포인트 받기</span>
+          <span class="gcount">1 / 3</span>
+        </div>
+        <div class="mcard">
+          <div class="mitem ad done">
+            <div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="mbody"><div class="mttl"><span class="micon">🚗</span> 현대캐피탈 광고 보기 <span class="adtag">AD</span></div><div class="msub">자동차담보대출</div></div>
+            <div class="rwd">+5P</div>
+          </div>
+          <div class="mitem ad">
+            <div class="chk"></div>
+            <div class="mbody"><div class="mttl"><span class="micon">💳</span> 카드비교서비스 알아보기 <span class="adtag">AD</span></div><div class="msub">최대 19만원 캐시백</div></div>
+            <div class="rwd">+5P</div>
+          </div>
+          <div class="mitem ad">
+            <div class="chk"></div>
+            <div class="mbody"><div class="mttl"><span class="micon">2️⃣</span> SBI신용대출 한도조회 <span class="adtag">AD</span></div><div class="msub">최대 2% 금리할인</div></div>
+            <div class="rwd">+5P</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 완주 보너스 -->
+      <div class="bonus">
+        <span class="bi">🏆</span>
+        <span class="bt">미션 6개 모두 완주 보너스</span>
+        <span class="br">+500P</span>
+      </div>
+
+    </div>
+
+    <div class="tabbar">
+      <div class="tab"><div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 5l8 6.5"/><path d="M6 10.5V19h12v-8.5"/></svg></div><div class="tl">홈</div></div>
+      <div class="tab active"><div class="ti"><span class="pcircle"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="#fff" stroke="none"/></svg></span></div><div class="tl">미션</div></div>
+      <div class="tab"><div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div><div class="tl">전체</div></div>
+    </div>
+  </div>
+
+</body>
+</html>
